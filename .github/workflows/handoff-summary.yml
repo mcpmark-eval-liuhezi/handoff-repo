@@ -1,0 +1,23 @@
+name: Handoff Summary
+
+on:
+  workflow_dispatch:
+
+jobs:
+  summary:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Write handoff summary log
+        run: |
+          echo "Handoff run started at $(date -u +%Y-%m-%dT%H:%M:%SZ)" > handoff-summary.log
+          echo "Repository: mcpmark-eval-liuhezi/handoff-repo" >> handoff-summary.log
+          echo "Default branch: main" >> handoff-summary.log
+          echo "Workflow: Handoff Summary (workflow_dispatch)" >> handoff-summary.log
+          echo "Release handoff prepared for teammate takeover." >> handoff-summary.log
+          cat handoff-summary.log
+      - name: Upload handoff summary artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: handoff-summary
+          path: handoff-summary.log
+          retention-days: 90
